@@ -1,0 +1,28 @@
+01_assignment.txt
+
+Group #: 3
+
+  Igor
+
+  Boris
+
+  Santiago
+
+  Xiu
+
+...................................
+Assignment 1
+
+  part 1: dynamic memory change
+  part 2: the material covered in week 4 class 2 (Jan 31, 2014)
+  part 3: log files, control files (Chapter 14)
+
+create 4 more disks in parallel with folder
+  opt/oracle/oradata/dborcl
+                     disk1
+                     disk2
+                     disk3
+                     disk4
+
+part 2: sessions 3,4 
+part 3: 5-6.

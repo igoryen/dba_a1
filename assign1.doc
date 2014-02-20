@@ -1,0 +1,323 @@
+
+<<< Log from zenit.senecac.on.ca started February 12, 2014, 16:13:00 >>>
+SQL> STARTUP NOMOUNT PFILE=initdborcl.ora;                                                                                            
+LRM-00109: could not open parameter file 'initdborcl.ora'                                                                             
+ORA-01078: failure in processing system parameters                                                                                    
+SQL> host                                                                                                                             
+oracle@localhost:/opt/oracle/oradata/dborcl> cd /opt/oracle/admin/dborcl/                                                             
+oracle@localhost:/opt/oracle/admin/dborcl> ls -l                                                                                      
+total 24                                                                                                                              
+drwxr-x--- 2 oracle oinstall 12288 2014-02-12 14:54 adump                                                                             
+drwxr-x--- 2 oracle oinstall  4096 2010-06-24 13:50 dpdump                                                                            
+drwxr-x--- 2 oracle oinstall  4096 2014-01-22 11:22 pfile                                                                             
+drwxr-x--- 2 oracle oinstall  4096 2010-06-24 13:47 scripts                                                                           
+oracle@localhost:/opt/oracle/admin/dborcl> cd pfile                                                                                   
+oracle@localhost:/opt/oracle/admin/dborcl/pfile> ls                                                                                   
+initdborcl.ora  init.ora.5242010135221                                                                                                
+oracle@localhost:/opt/oracle/admin/dborcl/pfile> ^C                                                                                   
+oracle@localhost:/opt/oracle/admin/dborcl/pfile> STARTUP NOMOUNT PFILE=initdborcl.ora;                                                
+If 'STARTUP' is not a typo you can use command-not-found to lookup the package that contains it, like this:                           
+    cnf STARTUP                                                                                                                       
+oracle@localhost:/opt/oracle/admin/dborcl/pfile> sql plus                                                                             
+If 'sql' is not a typo you can use command-not-found to lookup the package that contains it, like this:                               
+    cnf sql                                                                                                                           
+oracle@localhost:/opt/oracle/admin/dborcl/pfile> sqlplus /nolog                                                                       
+
+SQL*Plus: Release 11.2.0.1.0 Production on Wed Feb 12 15:00:22 2014                                                                   
+
+Copyright (c) 1982, 2009, Oracle.  All rights reserved.                                                                               
+
+SQL> conn sys as sysdba                                                                                                               
+Enter password:                                                                                                                       
+Connected.                                                                                                                            
+SQL> STARTUP NOMOUNT PFILE=initdborcl.ora;                                                                                            
+ORA-01081: cannot start already-running ORACLE - shut it down first                                                                   
+SQL> shutdown immediate;                                                                                                              
+^CORA-01013: user requested cancel of current operation                                                                               
+
+SQL> shutdown abort;                                                                                                                  
+ORACLE instance shut down.                                                                                                            
+SQL> STARTUP NOMOUNT PFILE=initdborcl.ora;                                                                                            
+ORACLE instance started.                                                                                                              
+
+Total System Global Area  418484224 bytes                                                                                             
+Fixed Size                  1336932 bytes                                                                                             
+Variable Size             276826524 bytes                                                                                             
+Database Buffers          134217728 bytes                                                                                             
+Redo Buffers                6103040 bytes                                                                                             
+SQL> SHOW PARAMETER SGA                                                                                                               
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+lock_sga                             boolean     FALSE                                                                                
+pre_page_sga                         boolean     FALSE                                                                                
+sga_max_size                         big integer 400M                                                                                 
+sga_target                           big integer 0                                                                                    
+SQL> SHOW PARAMETER SPFILE                                                                                                            
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+spfile                               string                                                                                           
+SQL> ALTER DATABASE MOUNT;                                                                                                            
+
+Database altered.                                                                                                                     
+
+SQL> SELECT status FROM V$INSTANCE;                                                                                                   
+
+STATUS                                                                                                                                
+------------                                                                                                                          
+MOUNTED                                                                                                                               
+
+SQL> SELECT open_mode FROM v$database;                                                                                                
+
+OPEN_MODE                                                                                                                             
+--------------------                                                                                                                  
+MOUNTED                                                                                                                               
+
+SQL> DESC dba_objects;                                                                                                                
+ERROR:                                                                                                                                
+ORA-04043: object dba_objects does not exist                                                                                          
+
+
+SQL> ALTER DATABASE OPEN;                                                                                                             
+
+Database altered.                                                                                                                     
+
+SQL> SELECT status FROM V$INSTANCE;                                                                                                   
+
+STATUS                                                                                                                                
+------------                                                                                                                          
+OPEN                                                                                                                                  
+
+SQL> SELECT open_mode FROM v$database;                                                                                                
+
+OPEN_MODE                                                                                                                             
+--------------------                                                                                                                  
+READ WRITE                                                                                                                            
+
+SQL> DESC dba_objects;                                                                                                                
+ Name                                      Null?    Type                                                                              
+ ----------------------------------------- -------- ----------------------------                                                      
+ OWNER                                              VARCHAR2(30)                                                                      
+ OBJECT_NAME                                        VARCHAR2(128)                                                                     
+ SUBOBJECT_NAME                                     VARCHAR2(30)                                                                      
+ OBJECT_ID                                          NUMBER                                                                            
+ DATA_OBJECT_ID                                     NUMBER                                                                            
+ OBJECT_TYPE                                        VARCHAR2(19)                                                                      
+ CREATED                                            DATE                                                                              
+ LAST_DDL_TIME                                      DATE                                                                              
+ TIMESTAMP                                          VARCHAR2(19)                                                                      
+ STATUS                                             VARCHAR2(7)                                                                       
+ TEMPORARY                                          VARCHAR2(1)                                                                       
+ GENERATED                                          VARCHAR2(1)                                                                       
+ SECONDARY                                          VARCHAR2(1)                                                                       
+ NAMESPACE                                          NUMBER                                                                            
+ EDITION_NAME                                       VARCHAR2(30)                                                                      
+
+SQL> SHOW PARAMETER CONTROL                                                                                                           
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+control_file_record_keep_time        integer     7                                                                                    
+control_files                        string      /opt/oracle/oradata/dborcl/con                                                       
+                                                 trol01.ctl, /opt/oracle/oradat                                                       
+                                                 a/dborcl/control02.ctl                                                               
+control_management_pack_access       string      DIAGNOSTIC+TUNING                                                                    
+SQL> set pagesize 500                                                                                                                 
+SQL> show parameter log                                                                                                               
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+audit_syslog_level                   string                                                                                           
+commit_logging                       string                                                                                           
+db_create_online_log_dest_1          string                                                                                           
+db_create_online_log_dest_2          string                                                                                           
+db_create_online_log_dest_3          string                                                                                           
+db_create_online_log_dest_4          string                                                                                           
+db_create_online_log_dest_5          string                                                                                           
+enable_ddl_logging                   boolean     FALSE                                                                                
+log_archive_config                   string                                                                                           
+log_archive_dest                     string                                                                                           
+log_archive_dest_1                   string                                                                                           
+log_archive_dest_10                  string                                                                                           
+log_archive_dest_11                  string                                                                                           
+log_archive_dest_12                  string                                                                                           
+log_archive_dest_13                  string                                                                                           
+log_archive_dest_14                  string                                                                                           
+log_archive_dest_15                  string                                                                                           
+log_archive_dest_16                  string                                                                                           
+log_archive_dest_17                  string                                                                                           
+log_archive_dest_18                  string                                                                                           
+log_archive_dest_19                  string                                                                                           
+log_archive_dest_2                   string                                                                                           
+log_archive_dest_20                  string                                                                                           
+log_archive_dest_21                  string                                                                                           
+log_archive_dest_22                  string                                                                                           
+log_archive_dest_23                  string                                                                                           
+log_archive_dest_24                  string                                                                                           
+log_archive_dest_25                  string                                                                                           
+log_archive_dest_26                  string                                                                                           
+log_archive_dest_27                  string                                                                                           
+log_archive_dest_28                  string                                                                                           
+log_archive_dest_29                  string                                                                                           
+log_archive_dest_3                   string                                                                                           
+log_archive_dest_30                  string                                                                                           
+log_archive_dest_31                  string                                                                                           
+log_archive_dest_4                   string                                                                                           
+log_archive_dest_5                   string                                                                                           
+log_archive_dest_6                   string                                                                                           
+log_archive_dest_7                   string                                                                                           
+log_archive_dest_8                   string                                                                                           
+log_archive_dest_9                   string                                                                                           
+log_archive_dest_state_1             string      enable                                                                               
+log_archive_dest_state_10            string      enable                                                                               
+log_archive_dest_state_11            string      enable                                                                               
+log_archive_dest_state_12            string      enable                                                                               
+log_archive_dest_state_13            string      enable                                                                               
+log_archive_dest_state_14            string      enable                                                                               
+log_archive_dest_state_15            string      enable                                                                               
+log_archive_dest_state_16            string      enable                                                                               
+log_archive_dest_state_17            string      enable                                                                               
+log_archive_dest_state_18            string      enable                                                                               
+log_archive_dest_state_19            string      enable                                                                               
+log_archive_dest_state_2             string      enable                                                                               
+log_archive_dest_state_20            string      enable                                                                               
+log_archive_dest_state_21            string      enable                                                                               
+log_archive_dest_state_22            string      enable                                                                               
+log_archive_dest_state_23            string      enable                                                                               
+log_archive_dest_state_24            string      enable                                                                               
+log_archive_dest_state_25            string      enable                                                                               
+log_archive_dest_state_26            string      enable                                                                               
+log_archive_dest_state_27            string      enable                                                                               
+log_archive_dest_state_28            string      enable                                                                               
+log_archive_dest_state_29            string      enable                                                                               
+log_archive_dest_state_3             string      enable                                                                               
+log_archive_dest_state_30            string      enable                                                                               
+log_archive_dest_state_31            string      enable                                                                               
+log_archive_dest_state_4             string      enable                                                                               
+log_archive_dest_state_5             string      enable                                                                               
+log_archive_dest_state_6             string      enable                                                                               
+log_archive_dest_state_7             string      enable                                                                               
+log_archive_dest_state_8             string      enable                                                                               
+log_archive_dest_state_9             string      enable                                                                               
+log_archive_duplex_dest              string                                                                                           
+log_archive_format                   string      %t_%s_%r.dbf                                                                         
+log_archive_local_first              boolean     TRUE                                                                                 
+log_archive_max_processes            integer     4                                                                                    
+log_archive_min_succeed_dest         integer     1                                                                                    
+log_archive_start                    boolean     FALSE                                                                                
+log_archive_trace                    integer     0                                                                                    
+log_buffer                           integer     5906432                                                                              
+log_checkpoint_interval              integer     0                                                                                    
+log_checkpoint_timeout               integer     1800                                                                                 
+log_checkpoints_to_alert             boolean     FALSE                                                                                
+log_file_name_convert                string                                                                                           
+remote_login_passwordfile            string      EXCLUSIVE                                                                            
+sec_case_sensitive_logon             boolean     TRUE                                                                                 
+sec_max_failed_login_attempts        integer     10                                                                                   
+SQL> show parameter logfile                                                                                                           
+SQL> SELECT  group#, status, member FROM  V$LOGFILE;                                                                                  
+
+    GROUP# STATUS                                                                                                                     
+---------- -------                                                                                                                    
+MEMBER                                                                                                                                
+--------------------------------------------------------------------------------                                                      
+         3                                                                                                                            
+/opt/oracle/oradata/dborcl/redo03.log                                                                                                 
+
+         2                                                                                                                            
+/opt/oracle/oradata/dborcl/redo02.log                                                                                                 
+
+         1                                                                                                                            
+/opt/oracle/oradata/dborcl/redo01.log                                                                                                 
+
+
+SQL> select name, path from v$logfile;                                                                                                
+select name, path from v$logfile                                                                                                      
+       *                                                                                                                              
+ERROR at line 1:                                                                                                                      
+ORA-00904: "NAME": invalid identifier                                                                                                 
+
+
+SQL> SELECT name FROM V$CONTROLFile;                                                                                                  
+
+NAME                                                                                                                                  
+--------------------------------------------------------------------------------                                                      
+/opt/oracle/oradata/dborcl/control01.ctl                                                                                              
+/opt/oracle/oradata/dborcl/control02.ctl                                                                                              
+
+SQL> SELECT name FROM V$logfile;                                                                                                      
+SELECT name FROM V$logfile                                                                                                            
+       *                                                                                                                              
+ERROR at line 1:                                                                                                                      
+ORA-00904: "NAME": invalid identifier                                                                                                 
+
+
+SQL>      SELECT  member FROM  V$LOGFILE;                                                                                             
+
+MEMBER                                                                                                                                
+--------------------------------------------------------------------------------                                                      
+/opt/oracle/oradata/dborcl/redo03.log                                                                                                 
+/opt/oracle/oradata/dborcl/redo02.log                                                                                                 
+/opt/oracle/oradata/dborcl/redo01.log                                                                                                 
+
+SQL>      SELECT  member FROM  V$LOGFILE;                                                                                             
+
+MEMBER                                                                                                                                
+--------------------------------------------------------------------------------                                                      
+/opt/oracle/oradata/dborcl/redo03.log                                                                                                 
+/opt/oracle/oradata/dborcl/redo02.log                                                                                                 
+/opt/oracle/oradata/dborcl/redo01.log                                                                                                 
+
+SQL> select name from v$datafile;                                                                                                     
+
+NAME                                                                                                                                  
+--------------------------------------------------------------------------------                                                      
+/opt/oracle/oradata/dborcl/system01.dbf                                                                                               
+/opt/oracle/oradata/dborcl/sysaux01.dbf                                                                                               
+/opt/oracle/oradata/dborcl/undotbs01.dbf                                                                                              
+/opt/oracle/oradata/dborcl/users01.dbf                                                                                                
+/opt/oracle/oradata/dborcl/example01.dbf                                                                                              
+
+SQL> SHOW PARAMETER SGA                                                                                                               
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+lock_sga                             boolean     FALSE                                                                                
+pre_page_sga                         boolean     FALSE                                                                                
+sga_max_size                         big integer 400M                                                                                 
+sga_target                           big integer 0                                                                                    
+SQL> SHOW PARAMETER BUFFER                                                                                                            
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+buffer_pool_keep                     string                                                                                           
+buffer_pool_recycle                  string                                                                                           
+db_block_buffers                     integer     0                                                                                    
+log_buffer                           integer     5906432                                                                              
+use_indirect_data_buffers            boolean     FALSE                                                                                
+SQL> SHOW PARAMETER DB_CACHE                                                                                                          
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+db_cache_advice                      string      ON                                                                                   
+db_cache_size                        big integer 128M                                                                                 
+SQL> show parameter pool                                                                                                              
+
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+buffer_pool_keep                     string                                                                                           
+buffer_pool_recycle                  string                                                                                           
+global_context_pool_size             string                                                                                           
+java_pool_size                       big integer 64M                                                                                  
+large_pool_size                      big integer 16M                                                                                  
+olap_page_pool_size                  big integer 0                                                                                    
+shared_pool_reserved_size            big integer 6710886                                                                              
+shared_pool_size                     big integer 128M                                                                                 
+streams_pool_size                    big integer 0                                                                                    
+                                                                                                                                      
+NAME                                 TYPE        VALUE                                                                                
+------------------------------------ ----------- ------------------------------                                                       
+lock_sga                             boolean     FALSE                                                                                
+oracle@localhost:/opt/oracle/diag/rdbms/dborcl/dborcl/trace>                                                                          
+<<< Log from zenit.senecac.on.ca ended February 12, 2014, 17:55:03 >>>
