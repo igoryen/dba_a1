@@ -288,7 +288,7 @@ SELECT tablespace_name, status, contents, extent_management, initial_extent, all
       their auto-extend  information (with 3 components), ---- autoextensible
       but only for freshly created files and file from the 'USERS' tablespace. 
 
-         SELECT file_id, file_name, tablespace_name, autoextensible, increment_by, autoextensible
+         SELECT file_id, file_name, tablespace_name, blocks, increment_by, autoextensible, maxbytes
          FROM   dba_data_files
          WHERE  file_name IN('USERS','RED','BLUE');
 
@@ -299,7 +299,9 @@ SELECT tablespace_name, status, contents, extent_management, initial_extent, all
       with extent size of  80K -----------------
       and with the limit of 2M.-----------------
 
-         ALTER DATABASE DATAFILE '/opt/oracle/oradata/DISK3/red02.dbf' RESIZE 1M
+         ALTER DATABASE DATAFILE '/opt/oracle/oradata/DISK3/red02.dbf' RESIZE 1M;
+
+         ALTER DATABASE DATAFILE '/opt/oracle/oradata/DISK3/red02.dbf'
          AUTOEXTEND ON NEXT 80K MAXSIZE 2M;
 
 
@@ -340,7 +342,7 @@ SELECT tablespace_name, status, contents, extent_management, initial_extent, all
 ......................................
 STEP ONE -- take the tablespace Offline
 
-SQL> ALTER TABLESPACE joke OFFLINE;
+SQL> ALTER TABLESPACE RED OFFLINE;
 
   Tablespace altered.   
 
